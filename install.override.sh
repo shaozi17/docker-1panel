@@ -1,10 +1,10 @@
 #!/bin/bash
 
-PANEL_BASE_DIR=/opt
-PANEL_PORT=10086
-DEFAULT_ENTRANCE="entrance"
-DEFAULT_USERNAME="1panel"
-DEFAULT_PASSWORD="1panel_password"
+PANEL_BASE_DIR=/Users/shao/Work
+PANEL_PORT=8080
+DEFAULT_ENTRANCE="1panel"
+DEFAULT_USERNAME="shao"
+DEFAULT_PASSWORD="123456"
 
 CURRENT_DIR=$(
     cd "$(dirname "$0")"
@@ -18,10 +18,10 @@ function log() {
 
 echo
 cat << EOF
- ██╗    ██████╗  █████╗ ███╗   ██╗███████╗██╗     
-███║    ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║     
-╚██║    ██████╔╝███████║██╔██╗ ██║█████╗  ██║     
- ██║    ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║     
+ ██╗    ██████╗  █████╗ ███╗   ██╗███████╗██╗
+███║    ██╔══██╗██╔══██╗████╗  ██║██╔════╝██║
+╚██║    ██████╔╝███████║██╔██╗ ██║█████╗  ██║
+ ██║    ██╔═══╝ ██╔══██║██║╚██╗██║██╔══╝  ██║
  ██║    ██║     ██║  ██║██║ ╚████║███████╗███████╗
  ╚═╝    ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝
 EOF
@@ -62,7 +62,7 @@ function Install_Docker(){
         else
             sh get-docker.sh 2>&1 | tee -a ${CURRENT_DIR}/install.log
         fi
-        
+
         log "... 启动 docker"
         systemctl enable docker; systemctl daemon-reload; systemctl start docker 2>&1 | tee -a ${CURRENT_DIR}/install.log
 
@@ -85,7 +85,7 @@ function Install_Compose(){
     docker-compose version >/dev/null 2>&1
     if [[ $? -ne 0 ]]; then
         log "... 在线安装 docker-compose"
-        
+
         arch=$(uname -m)
 		if [ "$arch" == 'armv7l' ]; then
 			arch='armv7'
@@ -185,12 +185,12 @@ function Init_Panel(){
     fi
 
     # cp ./1panel.service /etc/systemd/system
-	# 
+	#
     # systemctl enable 1panel; systemctl daemon-reload 2>&1 | tee -a ${CURRENT_DIR}/install.log
-	# 
+	#
     # log "启动 1Panel 服务"
     # systemctl start 1panel | tee -a ${CURRENT_DIR}/install.log
-	# 
+	#
     # for b in {1..30}
     # do
     #     sleep 3
