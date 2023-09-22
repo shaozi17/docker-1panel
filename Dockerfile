@@ -35,16 +35,15 @@ COPY ./install.override.sh .
 COPY ./update_app_version.sh .
 
 # 定义版本参数
-ARG PANELVER=$PANELVER
-
-# 设置环境变量
-ENV PANELVER=$PANELVER
+ARG PANELVER
+ARG EX_PORT
 
 # 下载并安装 1Panel
 RUN INSTALL_MODE="stable" && \
     ARCH=$(dpkg --print-architecture) && \
     if [ "$ARCH" = "armhf" ]; then ARCH="armv7"; fi && \
     if [ "$ARCH" = "ppc64el" ]; then ARCH="ppc64le"; fi && \
+    if [ -z "$PANELVER" ]; then PANELVER=$(curl -fsSL https://resource.fit2cloud.com/1panel/package/stable/latest); fi && \
     package_file_name="1panel-${PANELVER}-linux-${ARCH}.tar.gz" && \
     package_download_url="https://resource.fit2cloud.com/1panel/package/${INSTALL_MODE}/${PANELVER}/release/${package_file_name}" && \
     echo "Downloading ${package_download_url}" && \
@@ -57,11 +56,14 @@ RUN INSTALL_MODE="stable" && \
     bash /app/install.sh && \
     find /app -type f ! -name 'update_app_version.sh' -delete
 
+# 设置环境变量
+ENV PANELVER=$PANELVER
+
 # 设置工作目录为根目录
 WORKDIR /
 
-# 暴露端口 10086
-EXPOSE 10086
+# 暴露端口 8080
+EXPOSE $EX_PORT
 
 # 创建 Docker 套接字的卷
 VOLUME /var/run/docker.sock
