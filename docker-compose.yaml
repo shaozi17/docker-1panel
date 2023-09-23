@@ -7,20 +7,31 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        # - PANELVER=v1.6.1
-        - EX_PORT=8080
+        - PANEL_VERSION=${PANEL_VERSION}
+        - PANEL_BASE_DIR=${PANEL_BASE_DIR}
+        - PANEL_PORT=${PANEL_PORT}
+        - DEFAULT_ENTRANCE=${DEFAULT_ENTRANCE}
+        - DEFAULT_USERNAME=${DEFAULT_USERNAME}
+        - DEFAULT_PASSWORD=${DEFAULT_PASSWORD}
+    environment:
+      - PANEL_VERSION=${PANEL_VERSION}
+      - TZ=Asia/Shanghai # 时区设置
     container_name: 1panel # 容器名
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/OrbStack/docker/volumes:/var/lib/docker/volumes
-      - ~/Work/1panel:/Users/shao/Work/1panel
-    environment:
-      - TZ=Asia/Shanghai # 时区设置
+      - ${DOCKER_VOLUME_DIR}:/var/lib/docker/volumes
+      - ${PANEL_BASE_DIR}/1panel:${PANEL_BASE_DIR}/1panel
     ports:
       - 8080:8080
+    networks:
+      - 1panel-network
 
 networks:
-  default:
+  1panel-network:
     name: 1panel-network
-    external: true
+    driver: bridge
+  # default:
+  #   name: 1panel-network
+  #   external: true
+  #   driver: bridge

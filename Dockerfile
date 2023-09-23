@@ -35,17 +35,21 @@ COPY ./install.override.sh .
 COPY ./update_app_version.sh .
 
 # 定义版本参数
-ARG PANELVER
-ARG EX_PORT
+ARG PANEL_VERSION
+ARG PANEL_BASE_DIR
+ARG PANEL_PORT
+ARG DEFAULT_ENTRANCE
+ARG DEFAULT_USERNAME
+ARG DEFAULT_PASSWORD
 
 # 下载并安装 1Panel
 RUN INSTALL_MODE="stable" && \
     ARCH=$(dpkg --print-architecture) && \
     if [ "$ARCH" = "armhf" ]; then ARCH="armv7"; fi && \
     if [ "$ARCH" = "ppc64el" ]; then ARCH="ppc64le"; fi && \
-    if [ -z "$PANELVER" ]; then PANELVER=$(curl -fsSL https://resource.fit2cloud.com/1panel/package/stable/latest); fi && \
-    package_file_name="1panel-${PANELVER}-linux-${ARCH}.tar.gz" && \
-    package_download_url="https://resource.fit2cloud.com/1panel/package/${INSTALL_MODE}/${PANELVER}/release/${package_file_name}" && \
+    if [ -z "$PANEL_VERSION" ]; then PANEL_VERSION=$(curl -fsSL https://resource.fit2cloud.com/1panel/package/stable/latest); fi && \
+    package_file_name="1panel-${PANEL_VERSION}-linux-${ARCH}.tar.gz" && \
+    package_download_url="https://resource.fit2cloud.com/1panel/package/${INSTALL_MODE}/${PANEL_VERSION}/release/${package_file_name}" && \
     echo "Downloading ${package_download_url}" && \
     curl -sSL -o ${package_file_name} "$package_download_url" && \
     tar zxvf ${package_file_name} --strip-components 1 && \
@@ -56,14 +60,11 @@ RUN INSTALL_MODE="stable" && \
     bash /app/install.sh && \
     find /app -type f ! -name 'update_app_version.sh' -delete
 
-# 设置环境变量
-ENV PANELVER=$PANELVER
-
 # 设置工作目录为根目录
 WORKDIR /
 
-# 暴露端口 8080
-EXPOSE $EX_PORT
+# 暴露端口
+EXPOSE $PANEL_PORT
 
 # 创建 Docker 套接字的卷
 VOLUME /var/run/docker.sock

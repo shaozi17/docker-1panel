@@ -1,11 +1,5 @@
 #!/bin/bash
 
-PANEL_BASE_DIR=/Users/shao/Work
-PANEL_PORT=8080
-DEFAULT_ENTRANCE="1panel"
-DEFAULT_USERNAME="shao"
-DEFAULT_PASSWORD="123456"
-
 CURRENT_DIR=$(
     cd "$(dirname "$0")"
     pwd
