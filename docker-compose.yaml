@@ -13,7 +13,9 @@ services:
         - DEFAULT_ENTRANCE=${DEFAULT_ENTRANCE}
         - DEFAULT_USERNAME=${DEFAULT_USERNAME}
         - DEFAULT_PASSWORD=${DEFAULT_PASSWORD}
+        - GIN_MODE=${GIN_MODE}
     environment:
+      - GIN_MODE=${GIN_MODE}
       - PANEL_VERSION=${PANEL_VERSION}
       - TZ=Asia/Shanghai # 时区设置
     container_name: 1panel # 容器名

@@ -41,6 +41,10 @@ ARG PANEL_PORT
 ARG DEFAULT_ENTRANCE
 ARG DEFAULT_USERNAME
 ARG DEFAULT_PASSWORD
+ARG GIN_MODE
+
+ENV PANEL_BASE_DIR=${PANEL_BASE_DIR}
+ENV GIN_MODE=${GIN_MODE}
 
 # 下载并安装 1Panel
 RUN INSTALL_MODE="stable" && \
@@ -70,4 +74,5 @@ EXPOSE $PANEL_PORT
 VOLUME /var/run/docker.sock
 
 # 启动
-CMD ["/bin/bash", "-c", "/usr/local/bin/1panel & sleep 3 && kill $(jobs -p) || true && /app/update_app_version.sh && /usr/local/bin/1panel"]
+CMD ["/bin/bash", "-c", "/usr/local/bin/1panel & sleep 2 && kill $(jobs -p) || true && /app/update_app_version.sh && /usr/local/bin/1panel"]
+# CMD ["/bin/bash", "-c", "/usr/local/bin/1panel"]
