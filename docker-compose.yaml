@@ -25,7 +25,7 @@ services:
       - ${DOCKER_VOLUME_DIR}:/var/lib/docker/volumes
       - ${PANEL_BASE_DIR}/1panel:${PANEL_BASE_DIR}/1panel
     ports:
-      - 8080:8080
+      - ${PANEL_PORT}:${PANEL_PORT}
     networks:
       - 1panel-network
 
