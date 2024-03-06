@@ -2,7 +2,7 @@ version: "3"
 services:
   1panel:
     # image: moelin/1panel:latest
-    image: shao/1panel:latest
+    image: shao/1panel:${PANEL_VERSION}
     build:
       context: .
       dockerfile: Dockerfile
